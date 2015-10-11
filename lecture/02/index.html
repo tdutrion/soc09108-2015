@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>SOC09108 - CMSs - Lecture 02</title>
+
+		<meta name="description" content="Second lecture on CMSs for the SOC09108 module at Edinburgh Napier University">
+		<meta name="author" content="Thomas Dutrion">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="../../css/reveal.css">
+		<link rel="stylesheet" href="../../css/theme/solarized.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../css/print/pdf.css' : '../../css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Content Management</h1>
+					<h3>Professional Practice</h3>
+				</section>
+				<section>
+					<section>
+						<h2>Versionning! (again)</h2>
+					</section>
+					<section>
+						<h2>Reminders</h2>
+						<ul>
+							<li>Not a requirement, a must have</li>
+							<li>Auto document the changes</li>
+							<li>Work in teams</li>
+							<li>Separate your changes from third party code</li>
+							<li>Be able to rollback</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Drawbacks</h2>
+						<ul>
+							<li>Hard to implement?</li>
+							<li>New concept, learning curve</li>
+							<li>What about databases?</li>
+						</ul>
+					</section>
+					<section>
+						<h2>In a nutshell</h2>
+						<ul>
+							<li>Use it (on real projects, not only this class)!</li>
+							<li>Use submodules for themes, plugins and WordPress core</li>
+							<li>Disable auto updates, file editors... stay in control!</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Introduction to Wordpress</h2>
+					</section>
+					<section>
+						<h2>History</h2>
+						<ul>
+							<li>A blog engine</li>
+							<li>Official successor of b2/cafelog</li>
+							<li>Launched in 2003</li>
+						</ul>
+						<aside class="notes">
+		        	Good example of Open Source fork
+							Previous maintainers out for too long
+				    </aside>
+					</section>
+					<section>
+						<h2>wordpress.com</h2>
+						<ul>
+							<li>Commercial WordPress hosting</li>
+							<li>No plugins, only 250 themes, no script modification</li>
+							<li>Custom domain in expensive VIP subscription</li>
+							<li>Solid infrastructure and quick start with no technical knowledge</li>
+							<li>More details <a href="https://en.support.wordpress.com/com-vs-org/">on their website</a> and <a href="https://www.expand2web.com/blog/wordpressorg-vs-wordpresscom-which-one-should-i-use/">on Expand2Web</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>wordpress.org</h2>
+						<ul>
+							<li>Home of the Open Source project</li>
+							<li>Free download</li>
+							<li>Free resources</li>
+							<li>More technical, allows a lot more things!</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Worldwide use</h2>
+						<p>According to <a href="http://expandedramblings.com/index.php/wordpress-statistics/">DMR</a>, updated August 14th, 2015</p>
+						<ul>
+							<li>Not accurate</li>
+							<li>23% of the web</li>
+							<li>18 millions of new WordPress website in 2014</li>
+							<li>First CMS worldwide</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Community</h2>
+						<ul>
+							<li>Largest CMS community in the world</li>
+							<li>Wide background: design agencies, developers, end-users, UX Designers...</li>
+							<li>Local user groups (<a href="http://www.meetup.com/WordPress-Edinburgh/">Edinburgh</a>: next meeting October 21th 2015)</li>
+							<li><a href="https://central.wordcamp.org/">Wordcamp</a>: WordPress centered conferences</li>
+						</ul>
+					</section>
+					<section>
+						<h2>License</h2>
+						<p>WordPress is licensed under the GPLv2 or later which guarantees users several freedoms:</p>
+						<ul>
+							<li>The freedom to run the program, for any purpose.</li>
+							<li>The freedom to study how the program works, and change it to make it do what you wish.</li>
+							<li>The freedom to redistribute.</li>
+							<li>The freedom to distribute copies of your modified versions to others.</li>
+						</ul>
+						<p>From <a href="">WordPress website</a></p>
+					</section>
+					<section>
+						<h2>Philosophy</h2>
+						<p>WordPress is guided by the following set of principles:</p>
+						<ul>
+							<li>Work Out of the Box</li>
+							<li>Design for the Majority</li>
+							<li>Decision not Options</li>
+							<li>Clean, Lean, and Mean</li>
+							<li>Strive for Simplicity</li>
+							<li>Deadlines are not Arbitrary</li>
+							<li>Be Mindful of the Vocal Minority</li>
+							<li>The WordPress Bill of Rights</li>
+						</ul>
+						<p>From <a href="https://codex.wordpress.org/WordPress#License.2C_Platform.2C_and_Philosophy">WordPress</a> website</p>
+					</section>
+					<section>
+						<h2>Platform</h2>
+						<p>WordPress developers allow the following requirements:</p>
+						<ul>
+							<li>Minimum: PHP 5.2.4+ and MySQL 5.0+</li>
+							<li>Currently recommended: PHP 5.6+ and MySQL 5.5+</li>
+						</ul>
+						<p>It is advised to use the latest supported versions of both PHP and MySQL to avoid attacks with exposed security vulnerabilities</p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Extending WordPress</h2>
+						<h3>themes</h3>
+					</section>
+					<section>
+						<h2>Requirements</h2>
+						<ul>
+							<li>Use companies visual identity / branding guidelines</li>
+							<li>Control your theme security (free themes can be unsecured)</li>
+							<li>Control your SEO completely</li>
+							<li>Quite easy to do!</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Don't use free themes</h2>
+						<ul>
+							<li>Bad referencement practices (wrong use of h1-h6 tags...)</li>
+							<li>Security vulnerability (escape output should be respected)</li>
+							<li>Standout, free themes are so common...</li>
+							<li>Rarely expose customisation options</li>
+						</ul>
+						<p>But still... use them for personal blogs and website, contribute back when finding issues on them.</p>
+					</section>
+					<section>
+						<h2>Premium themes</h2>
+						<ul>
+							<li>Not always quality (source your provider correctly)</li>
+							<li>Still not your company visual identity</li>
+							<li>Cost money</li>
+							<li>Watch out for extensibility and support</li>
+						</ul>
+						<p>May solve some of the problem, but definitely not a fully professional solution.</p>
+					</section>
+					<section>
+						<h2>Getting started</h2>
+						<ul>
+							<li>New theme?</li>
+							<li>Child theme?</li>
+						</ul>
+					</section>
+					<section>
+						<h2>New theme</h2>
+						<p>Creating a new theme consists in creating all the required elements to display the WorPress website. Therefore, it implies:</p>
+						<ul>
+							<li>Not to forget a display feature</li>
+							<li>To use the features provided by WordPress to respect extensibility</li>
+							<li>To have a budget large enough for both development and long term maintenance</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Child themes</h2>
+						<p>Creating a child theme consists in extending / overwriting an existing theme. Therefore it implies:</p>
+						<ul>
+							<li>Reduced development time</li>
+							<li>Reduced maintenance time</li>
+							<li>Less possibilities (parent theme defines the basics)</li>
+							<li>Parents themes still receive updates</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Where to start?</h2>
+						<p>The WordPress offers lessons on the <a href="https://codex.wordpress.org/WordPress_Lessons" target="_blank">codex</a> (ie: their documentation)</p>
+					</section>
+					<section>
+						<h2>Colour scheme</h2>
+						<ul>
+							<li>First article on the codex: <a href="https://codex.wordpress.org/Developing_a_Colour_Scheme" target="_blank">Developing a colour scheme</a></li>
+							<li>Use your company branding guidelines</li>
+							<li>Watch out for accessibility (<a href="http://www.w3.org/WAI/ER/tools/" target="_blank">W3 WAI accessibility list</a>)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Theme structure</h2>
+						<image src="template-hierarchy.png" alt="WordPress template hierarchy diagram">
+					</section>
+					<section>
+						<h2>Read the doc!</h2>
+						<a href="https://developer.wordpress.org/themes/getting-started/">https://developer.wordpress.org/themes/getting-started/</a>
+					</section>
+					<section>
+						<h2>Questions</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Next week</h2>
+					</section>
+					<section>
+						<h2>WordPress: developing a child theme</h2>
+						<ul>
+							<li>Sourcing a parent theme</li>
+							<li>Adding your own design (University theme)</li>
+							<li>Don't forget versioning!! (see last week's practical)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<h2>Thanks for coming</h2>
+					<ul>
+						<li>Feedback welcome</li>
+						<li>Questions welcome</li>
+						<li>See you on Tuesday</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="../../lib/js/head.min.js"></script>
+		<script src="../../js/reveal.js"></script>
+		<script>
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				slideNumber: 'c / t',
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: '../../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>

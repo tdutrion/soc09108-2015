@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>SOC09108 - CMSs - Lecture 03</title>
+
+		<meta name="description" content="Third lecture on CMSs for the SOC09108 module at Edinburgh Napier University">
+		<meta name="author" content="Thomas Dutrion">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="../../css/reveal.css">
+		<link rel="stylesheet" href="../../css/theme/solarized.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../css/print/pdf.css' : '../../css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Content Management</h1>
+					<h3>Professional Practice</h3>
+				</section>
+				<section>
+					<section>
+						<h2>Themes</h2>
+					</section>
+					<section>
+						<h2>How far have you been?</h2>
+						<ul>
+							<li>Child theme?</li>
+							<li>Full theme?</li>
+							<li>Theme versionning (main repository)?</li>
+							<li>Theme versionning (as a submodule)?</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Advantages/Drawbacks</h2>
+						<ul>
+							<li>See lecture 02</li>
+							<li>What have you learnt in trying?</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Module progress</h2>
+					</section>
+					<section>
+						<h2>Currently week 5</h2>
+					</section>
+					<section>
+						<h2>End week 13 or 15</h2>
+					</section>
+					<section>
+						<h2>Courseworks</h2>
+						<ul>
+							<li>
+								Demonstration week 13 (8 weeks from now)
+								<ul><li>50% mark</li></ul>
+							</li>
+							<li>
+								Critical essay week 15 (?) (10 weeks from now)
+								<ul><li>50% mark</li></ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Coursework 1: create a website</h2>
+						<ul>
+							<li>Build a WordPress website</li>
+							<li>Create custom theme (child or full), logo provided</li>
+							<li>Create custom plugin (with database and form processing)</li>
+							<li>Assessment on speed, overall design, accessibility, security...</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Coursework 2: critical essay</h2>
+						<ul>
+							<li>2000 words</li>
+							<li>
+								Compare 6 CMSs
+								<ul>
+									<li>Security</li>
+									<li>Speed</li>
+									<li>SEO</li>
+									<li>Ease of use</li>
+									<li>Costs (initial and maintenance)</li>
+									<li>...</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Tips</h2>
+						<ul>
+							<li>
+								Manage your time
+								<ul>
+									<li>Other modules courseworks</li>
+									<li>Don't spend to much on building the site</li>
+								</ul>
+							</li>
+							<li>
+								Second coursework is academic
+								<ul>
+									<li>Keep sentences simple (not to long, split in paragraphs)</li>
+									<li>Structure is as important as content</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Extending WordPress</h2>
+						<h3>Plugins</h3>
+					</section>
+					<section>
+						<h2>Definition</h2>
+						<p>From <a href="https://codex.wordpress.org/Plugins" target="_blank">codex.wordpress.org</a></p>
+						<blockquote>
+							<p>Plugins are ways to extend and add to the functionality that already exists in WordPress.</p>
+							<p>The core of WordPress is designed to be lean and lightweight, to maximize flexibility and minimize code bloat. Plugins then offer custom functions and features so that each user can tailor their site to their specific needs.</p>
+						</blockquote>
+					</section>
+					<section>
+						<h2>Use existing plugins</h2>
+						<ul>
+							<li>
+								Through the administration interface
+								<ul>
+									<li>From the repository</li>
+									<li>From an archive (zip or tar)</li>
+									<li>Create / move files for you! (no tracking)</li>
+								</ul>
+							</li>
+							<li>
+								In the wp-content/plugins
+								<ul>
+									<li>Add files (and version in your repository)</li>
+									<li>Add as git submodules</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Plugin content</h2>
+						<ul>
+							<li>PHP</li>
+							<li>CSS</li>
+							<li>Javascript</li>
+							<li>Images</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Naming</h2>
+						<p>You have to choose a unique name for your plugin to avoid problems with other plugins you may need to use.</p>
+						<p>Use a consistent naming convention for your organisation, with a descriptive part.</p>
+						<p>Example: napier-newsletter {organisation}-{feature}</p>
+					</section>
+					<section>
+						<h2>Single file plugin</h2>
+						<p>Plugins can be contained in a single file <strong>{plugin-name}.php</strong></p>
+						<p><strong>Do not use extensively</strong> as maintenance is almost impossible, prefer creating more files as requirements can change and your code can get more complicated.</p>
+						<p>Example: <a href="http://www.smashingmagazine.com/2011/09/how-to-create-a-wordpress-plugin/" target="_blank">Smashing Magazine: how to create a WordPress plugin</a></p>
+					</section>
+					<section>
+						<h2>Split your plugin</h2>
+						<p>You can create a plugin with multiple files. The directory name and the main plugin file should be called the same for it to work.</p>
+						<p>Example: <pre><strong>/wp-content/plugins/napier-newsletter/napier-newsletter.php</strong></pre></p>
+					</section>
+					<section>
+						<h2>Plugin infos</h2>
+						<pre class="php"><code>
+&lt;?php
+   /*
+   Plugin Name: Awesomeness Creator
+   Plugin URI: http://my-awesomeness-emporium.com
+   Description: a plugin to create awesomeness and spread joy
+   Version: 1.2
+   Author: Mr. Awesome
+   Author URI: http://mrtotallyawesome.com
+   License: GPL2
+   */
+?&gt;
+						</code></pre>
+						<p><strong>Only the name is required</strong>. This has to be in the main file.</p>
+					</section>
+					<section>
+						<h2>Hooks</h2>
+						<p>A plugin hook is a function you can use to register a specific function to be executed at a specific time in the dispatch loop.</p>
+						<pre class="php"><code>
+add_action(
+	'hook_name',
+	'your_function_name',
+	[priority],
+	[accepted_args]
+);
+						</code></pre>
+						<pre class="php"><code>add_action ( 'publish_post', 'email_friends' );</code></pre>
+					</section>
+					<section>
+						<h2>Template tags</h2>
+						<p>A template tag is PHP function used to generate and display information dynamically. This function is defined in the global namespace and can therefore be used in any template file (because of the dispatch loop, plugins are loaded before executing templates).</p>
+						<p>Example:</p>
+						<pre class="php"><code>function bloginfo('test');</code></pre>
+						<p>Because the function name is already in use in WordPress, this can be use to override its behaviour.</p>
+					</section>
+					<section>
+						<h2>Best practice</h2>
+						<p>Never use</p>
+						<pre class="php"><code>wp-content/plugins/</code></pre>
+						<p>use</p>
+						<pre class="php"><code>plugin_dir_path</code></pre>
+						<p>or</p>
+						<pre class="php"><code>plugins_url</code></pre>
+					</section>
+					<section>
+						<h2>Best practice</h2>
+						<p>Never hardcode the table prefix</p>
+						<pre class="php"><code>wp_</code></pre>
+						<p>use</p>
+						<pre class="php"><code>$wpdb->prefix</code></pre>
+					</section>
+					<section>
+						<h2>Best practice</h2>
+						<p>Use</p>
+						<pre class="php"><code>wp_enqueue_script()</code></pre>
+						<p>and</p>
+						<pre class="php"><code>wp_enqueue_style()</code></pre>
+						<p>to load scripts and css</p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Extending plugins</h2>
+						<h3>Shortcode</h3>
+					</section>
+					<section>
+						<h2>Definition</h2>
+						<p>A shortcode is a small code surrounded by squared brackets that the end user can use when editing content on WordPress, in order to use advanced features or styles.</p>
+					</section>
+					<section>
+						<h2>Example</h2>
+						<p><a href="https://generatewp.com/shortcodes/?clone=video-embed-shortcode" target="_blank">https://generatewp.com/shortcodes/?clone=video-embed-shortcode</a></p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Extending plugins</h2>
+						<h3>Widget</h3>
+					</section>
+					<section>
+						<h2>Definition</h2>
+						<blockquote>WordPress Widgets add additional content and features to your WordPress site’s sidebars. Examples are the default widgets that come with WordPress — like those for archives, post categories, search bars and custom menus.</blockquote>
+						<p>From <a href="https://ithemes.com/tutorials/using-wordpress-widgets/" target="_blank">ithemes - using WordPress widgets</a></p>
+					</section>
+					<section>
+						<h2>Customise an existing widget</h2>
+						<p><a href="https://en.support.wordpress.com/widgets/create-your-own-widget/" target="_blank">WordPress documentation: Create your own widget</a></p>
+					</section>
+					<section>
+						<h2>Add a widget to your plugin</h2>
+						<p><a href="http://www.wpbeginner.com/wp-tutorials/how-to-create-a-custom-wordpress-widget/" target="_blank">WP Beginner: How to create a custom WordPress widget</a></p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Next week</h2>
+					</section>
+					<section>
+						<h2>Create a plugin</h2>
+					</section>
+					<section>
+						<p>You need to create a form where visitors can enter their email address.</p>
+						<p>Once the address has been validated, store it into your database.</p>
+						<p>If the address does not validate, display the form again with the email provided in the email field and an error message.</p>
+					</section>
+					<section>
+						<p>Please version or backup your code, we will reuse this example for the security practical.</p>
+					</section>
+					<section>
+						<h2>Bonus</h2>
+						<p>Create an administration interface to display the list of addresses.</p>
+						<p>Create the form as a shortcode embeddable in any post.</p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<h2>Thanks for coming</h2>
+					<ul>
+						<li>Feedback welcome</li>
+						<li>Questions welcome</li>
+						<li>See you on Tuesday</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="../../lib/js/head.min.js"></script>
+		<script src="../../js/reveal.js"></script>
+		<script>
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				slideNumber: 'c / t',
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: '../../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>

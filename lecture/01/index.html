@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>SOC09108 - CMSs - Lecture 01</title>
+
+		<meta name="description" content="First lecture on CMSs for the SOC09108 module at Edinburgh Napier University">
+		<meta name="author" content="Thomas Dutrion">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="../../css/reveal.css">
+		<link rel="stylesheet" href="../../css/theme/solarized.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../../css/print/pdf.css' : '../../css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Content Management</h1>
+					<h3>Professional Practice</h3>
+				</section>
+				<section>
+					<section id="the-module">
+						<h2>The module</h2>
+					</section>
+					<section id="teaching-team">
+						<h2>Teaching team</h2>
+						<h3>Thomas Dutrion</h3>
+						<ul>
+							<li>Job Title: Zero-Hours lecturer</li>
+							<li>Email: <a href="t.dutrion@napier.ac.uk">t.dutrion@napier.ac.uk</a></li>
+							<li>Subject Group: Software Engineering</li>
+						</ul>
+					</section>
+					<section id="weekly-planning">
+						<h2>Weekly planning</h2>
+						<ul>
+							<li>Lectures
+								<ul>
+									<li>2 hours on Thursdays (01pm to 03pm)</li>
+									<li>Theory, introducing concepts</li>
+								</ul>
+							</li>
+							<li>Practicals
+								<ul>
+									<li>2 hours on Tuesdays (11am-01pm OR 01pm-03pm)</li>
+									<li>Technical, you experiment things learned in lectures</li>
+								</ul>
+							</li>
+							<li>Home work
+								<ul>
+									<li>A lot of it, especially when the coursework will be released</li>
+									<li>Both technical and theoretical (project and report)</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section id="overall-planning-1">
+						<h2>Overall planning 1/2</h2>
+						<table>
+							<tbody>
+								<tr>
+									<th>Week</th>
+									<th>Practical</th>
+									<th>Lecture</th>
+								</tr>
+								<tr>
+									<th>14/09 - 20/09</th>
+									<td>Introduction<br>Wordpress installation</td>
+									<td>Introduction, Definition of content management, technical revisions and introduction to versionning</td>
+								</tr>
+								<tr>
+									<th>21/09 - 27/09</th>
+									<td>Versionning 101: git basics</td>
+									<td>Introduction to wordpress<br>Extending wordpress: themes</td>
+								</tr>
+								<tr>
+									<th>28/09 - 04/10</th>
+									<td>Building a custom theme 1/2</td>
+									<td>Guest lecture</td>
+								</tr>
+								<tr>
+									<th>05/10 – 11/10</th>
+									<td>Building a custom theme 2/2</td>
+									<td>Extending wordpress: plugins</td>
+								</tr>
+								<tr>
+									<th>12/10 – 18/10</th>
+									<td>Building a custom plugin</td>
+									<td>Extending wordpress: security</td>
+								</tr>
+								<tr>
+									<th>19/10 – 25/10</th>
+									<td>Securing a custom plugin</td>
+									<td>Generic: optimising page load</td>
+								</tr>
+								<tr>
+									<th>26/10 – 01/11</th>
+									<td>Optimising a website loading time</td>
+									<td>Modern CMS: Drupal 8 introduction</td>
+								</tr>
+								<tr>
+									<th>02/11 – 08/11</th>
+									<td>Wordpress and Drupal as services</td>
+									<td>Deployment: best practices</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section id="overall-planning-2">
+						<h2>Overall planning 2/2</h2>
+						<table>
+							<thead>
+								<tr>
+									<th>Week</th>
+									<th>Practical</th>
+									<th>Lecture</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>09/11 – 15/11</th>
+									<td>Deployment with wordpress</td>
+									<td></td>
+								</tr>
+								<tr>
+									<th>16/11 – 22/11</th>
+									<td>Assessment support</td>
+									<td>Assessment support</td>
+								</tr>
+								<tr>
+									<th>23/11 – 29/11</th>
+									<td>Assessment support</td>
+									<td>Assessment support</td>
+								</tr>
+								<tr>
+									<th>30/11 – 06/12</th>
+									<td>Demonstrations</td>
+									<td>Final questions</td>
+								</tr>
+								<tr>
+									<th>07/12 – 13/12</th>
+									<td>Assessment week</td>
+									<td>No practical nor lecture</td>
+								</tr>
+								<tr>
+									<th>14/12 – 20/12</th>
+									<td>Assessment week</td>
+									<td>No practical nor lecture</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section id="the-module-questions">
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section id="content-management">
+						<h2>Content management</h2>
+					</section>
+					<section id="content-management-definitions">
+						<h2>Definitions</h2>
+						<div class="splitted">
+							<div>
+								<h3>Content</h3>
+								<blockquote>
+									In publishing, art, and communication, content is the information and experience(s) directed towards an end-user or audience. Content is "something that is to be expressed through some medium, as speech, writing or any of various arts".
+								</blockquote>
+							</div>
+							<div>
+								<h3>Management</h3>
+								<blockquote>
+									Management in businesses and organizations is the function that coordinates the efforts of people to accomplish goals and objectives by using available resources efficiently and effectively.
+								</blockquote>
+							</div>
+						</div>
+						<p>Quotes from Wikipedia</p>
+					</section>
+					<section id="content-management-systems">
+						<h2>CMS</h2>
+						<table>
+							<tr>
+								<td>
+									<img src="wordpress.png" alt="Wordpress logo">
+								</td>
+								<td>
+									<img src="drupal.png" alt="Drupal logo">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src="ee-banner.png" alt="Expression Engine logo">
+								</td>
+								<td>
+									<img src="joomla.png" alt="Joomla logo">
+								</td>
+							</tr>
+						</table>
+					</section>
+					<section id="cms-market-shares-1">
+						<h2>Market shares 1/2</h2>
+						<img src="cms-market-shares.png" alt="CMSs market shares 2014-2015">
+						<p>CMS market shares, retrieved from <a href="http://w3techs.com/technologies/history_overview/content_management">W3Tech</a></p>
+					</section>
+					<section id="cms-market-shares-2">
+						<h2>Market shares 2/2</h2>
+						<h3>Stay critical!</h3>
+						<p class="fragment" data-fragment-index="0">Who created the statistics?</p>
+						<p class="fragment" data-fragment-index="1">What are they based on?</p>
+						<p class="fragment" data-fragment-index="2">Does that include data on CMS used behind companies firewalls? (spoiler: no)</p>
+					</section>
+					<section id="cms-target">
+						<h2>For who and what?</h2>
+						<ul>
+							<li class="fragment" data-fragment-index="0">Non-technical users who want to manage/publish content</li>
+							<li class="fragment" data-fragment-index="1">Developers with common requirements (create a blog, website...)</li>
+							<li class="fragment" data-fragment-index="2">Developers with specific requirements and common requirements in the same time</li>
+							<li class="fragment" data-fragment-index="3">Manage documents inside a company (workflows inside CMSs)</li>
+							<li class="fragment" data-fragment-index="4">Communicating with the world (publishing, receiving feedbacks)</li>
+						</ul>
+					</section>
+					<section id="cms-choices">
+						<h2>How to choose?</h2>
+						<ul>
+							<li class="fragment" data-fragment-index="0">Mainly a personal opinion / preference</li>
+							<li class="fragment" data-fragment-index="1">Legal constraints (licence, support)</li>
+							<li class="fragment" data-fragment-index="2">Community, never get stuck</li>
+							<li class="fragment" data-fragment-index="3">The more users, the more the project can fix bugs quickly</li>
+							<li class="fragment" data-fragment-index="4">"One fits all" problem</li>
+						</ul>
+					</section>
+					<section id="content-management-questions">
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section id="technical-revisions">
+						<h2>Technical (re)visions</h2>
+					</section>
+					<section id="web-request-lifecycle">
+						<h2>Web request lifecycle</h2>
+						<img src="http.png" alt="Web request lifecycle sequence diagram in a PHP context">
+					</section>
+					<section id="amp">
+						<h2>WAMP / LAMP / MAMP</h2>
+						<ul style="font-size: 0.8em;">
+							<li>W/M/L: Windows / MacOS / Linux
+								<ul>
+									<li>The operating system of your server</li>
+								</ul>
+							</li>
+							<li>A: Apache
+								<ul>
+									<li>An HTTP server: receives a request, gives a response</li>
+									<li>Compete with others, especially Ngnix</li>
+								</ul>
+							</li>
+							<li>M: Mysql
+								<ul>
+									<li>A database server, specifically a relational database server in this case</li>
+									<li>Compete with MariaDB (fork), Postgresql, Oracle, Microsoft SQL Database</li>
+								</ul>
+							</li>
+							<li>P: PHP
+								<ul>
+									<li>A scripting language, here the interpreter used to parse the files</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section id="html">
+						<h2>HTML</h2>
+						<ul>
+							<li>Markup language (not programming)</li>
+							<li>Structuring and presenting content</li>
+							<li>Currently version 5</li>
+							<li>Recommandation, not a standard</li>
+						</ul>
+						<pre class="html fragment" data-fragment-index="0"><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en-GB&quot;&gt;
+    &lt;head&gt;
+	&lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+					</section>
+					<section id="css">
+						<h2>CSS</h2>
+						<ul>
+							<li>Style sheet language (not programming)</li>
+							<li>Applied to a document written in markup language</li>
+							<li>Describing the look and formatting of a document</li>
+							<li>Currently version 3</li>
+							<li>Recommandation, not a standard</li>
+						</ul>
+						<pre class="css fragment" data-fragment-index="0"><code>
+/* Comment */
+
+html {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 62.5%;
+	overflow-y: scroll;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+						</code></pre>
+					</section>
+					<section id="php">
+						<h2>PHP</h2>
+						<ul>
+							<li>Server-side scripting language (programming!)</li>
+							<li>Gives instruction to the machine</li>
+							<li>Currently version 5.6, version 7 in November</li>
+							<li>Powers many CMSs</li>
+						</ul>
+						<pre class="php fragment" data-fragment-index="0"><code>
+&lt;?php // opening tag
+/**
+ * Comment
+ */
+// other comment
+if ( !isset($wp_did_header) ) { // condition
+	$wp_did_header = true; // assignation
+	require_once( dirname(__FILE__) . '/wp-load.php' );
+	wp(); // method call
+	require_once( ABSPATH . WPINC . '/template-loader.php' );
+}
+						</code></pre>
+					</section>
+					<section id="sql">
+						<h2>SQL</h2>
+						<ul>
+							<li>Special-purpose programming language for RDBMS</li>
+							<li>Managing relational data</li>
+							<li>Currently version: SQL:2011</li>
+							<li>Different implementations in different RDBMS</li>
+						</ul>
+						<pre class="sql fragment" data-fragment-index="0"><code>
+# comment
+
+# MYSQL CODE ONLY  because of the back ticks
+SELECT * FROM `table` WHERE `column` = %s AND `field` = %d
+						</code></pre>
+						<pre class="php fragment" data-fragment-index="1"><code>
+// REQUEST WITH EMBEDDED PHP
+$wpdb->query("
+	INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order)
+	VALUES " . join( ',', $values ) . "
+	ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)
+")
+						</code></pre>
+					</section>
+					<section id="tools">
+						<h2>Tools</h2>
+						<ul>
+							<li>Web browsers + Developer tools</li>
+							<li>Integrated Development Environment / Text editor</li>
+							<li>Preprocessors</li>
+							<li>Performance analysis tools</li>
+							<li>Versioning</li>
+						</ul>
+					</section>
+					<section id="technical-revisions-questions">
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section id="next-week">
+						<h2>Next week</h2>
+					</section>
+					<section id="versioning-code">
+						<h2>Versioning: code</h2>
+					</section>
+					<section id="version-control-systems">
+						<h2>Version Control Systems</h2>
+						<ul>
+							<li>Git</li>
+							<li>Subversion (SVN)</li>
+							<li>Mercurial</li>
+						</ul>
+						<p>More details on Wikipedia: <a href="https://en.wikipedia.org/wiki/Version_control">Version Control Systems</a></p>
+					</section>
+					<section id="git-basics">
+						<h2>Git basic demonstration</h2>
+						<video controls="controls" src="git-basic-demo.mp4"></video>
+					</section>
+				</section>
+				<section id="thanks">
+					<h2>Thanks for coming</h2>
+					<ul>
+						<li>Feedback welcome</li>
+						<li>Questions welcome</li>
+						<li>See you on Tuesday</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<style>
+			.reveal table th, .reveal table td {
+				font-size: 0.6em;
+			}
+			.splitted {
+				width: 100%;
+			}
+			.splitted > div {
+				width: 50%;
+				float: left;
+			}
+			.splitted > div blockquote {
+				font-size: 0.8em;
+			}
+			.reveal table img {
+				width: 100%;
+				border: none;
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				box-shadow: none;
+			}
+		</style>
+		<script src="../../lib/js/head.min.js"></script>
+		<script src="../../js/reveal.js"></script>
+		<script>
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				slideNumber: 'c / t',
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: '../../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
