@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+
+      <title>SOC09108 - 2015 - Practical 02</title>
+      <link href='../../style.css' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+
+  <body>
+      <img id="logo" src="../../ENU-logo.png" alt="Edinburgh Napier University logo">
+      <h1>SOC09108 - 2015 - Practical 02</h1>
+
+      <h2>Versionning 101 - GIT basics</h2>
+
+      <h3>Requirements</h3>
+
+      <p>In order to achieve this practical, you need to have a fully working environment with:</p>
+
+      <ul>
+          <li>GIT</li>
+          <li>Apache</li>
+          <li>PHP</li>
+          <li>MySQL</li>
+      </ul>
+
+      <p>The first part will only require GIT and a text editor, and the second one requires the *AMP stack in order to run a WordPress install.</p>
+
+      <p>If you do not have this setup, please refer to <code>SOC09108 - Practical practice - Wamp JKCC.pdf</code>.</p>
+
+      <p>I recommend to work either from a USB key or the <code>D:\</code> drive. This drive is temporary, and the data are erased regularly. You can remove every data after saving them in a zip in your <code>H:\</code> drive at the end of each session.</p>
+      <h3>GIT - first approach</h3>
+      <p>In order to understand how we will work with GIT, it is important to start with a very simple example.</p>
+      <p>Let’s start by creating a new folder, in Laragon Web Root (here <code>D:\Laragon\www</code>). Using the <code>Shell</code> button will allow you to access the terminal application, in which you can use both system wide commands along with GIT and Composer installed in Laragon. The terminal should be opened in <code>D:\laragon\www</code>. Create a new folder called <code>git01</code>.</p>
+      <pre><code class="bash">
+        mkdir git01
+      </code></pre>
+      <p>Enter the newly created folder: <code>cd git</code>.</p>
+      <p>Now initialise the GIT repository.</p>
+      <pre><code class="bash">
+        git init
+      </code></pre>
+      <p>This will create for you hidden files (<code>.git</code> folder) responsible for the versionning information (you can use <code>ls -la</code> to verify the folder has been created).</p>
+      <p>If you want to verify what is in this folder, you can use <code>ls</code> again, which allows you to list all the files and directory of a specific node (a filesystem node can be a file, a folder or a link).</p>
+      <p>By using the <code>git status</code> command, you will be able to see the current state of your repository. You should use it as often as you can. Here you should see that there is nothing to commit).</p>
+      <p>Create a new file in the folder, with some content.</p>
+      <pre><code class="bash">
+        echo Some initial content &gt; initial.txt
+      </code></pre>
+      <p><em>Usually, quotes are required around the string to echo, but using Laragon the quotes are printed in the file so don’t use any here.</em></p>
+
+      <p>You can now check what are the differences between the last commit (<code>Initial commit</code>) and the current files using <code>git status</code>.</p>
+      <p>You now have a file under <code>Untracked files</code>. This means this file will be excluded of the commit if you try to commit some files. This is helpful when working with lots of file, you can basically pick the one you want to commit to the repository. Add your file now with the <code>git add</code> command (<code>git add</code> followed by one or many filenames, or followed by a dot <code>.</code> to add any file under the current directory, including subdirectories).</p>
+      <pre><code class="bash">
+        git add initial.txt
+      </code></pre>
+
+      <p>Using the <code>git status</code> command again, you can see the file is now in your index (tracked), and your index is not empty anymore. This means that you can now commit the content of your index to the repository.</p>
+      <pre><code class="bash">
+        git commit -m "Add initial content"
+      </code></pre>
+
+      <p>As you can see, the <code>commit</code> command accepts parameters. Here, the <code>-m</code> parameter is used, allowing us to assign the commit message from the command line. This message is mandatory, and if you miss this parameter the message will be asked in whatever text editor your computer is opening for you (on Unix based systems it is often VIM by default, which is not at all user friendly).</p>
+
+      <p>Now use the <code>git status</code> command again and note how there is nothing in your index anymore. Indeed, all the indexed files have been commited to the repository, and there were no more untracked files anymore.</p>
+
+      <p>The <code>git log</code> command will now allow you to consult the list of all the commits ever made on your repository.</p>
+
+      <p>As you can see in the <code>git commit</code> and <code>git log</code> results, your commit name and address were defined automatically using your machine name. Using the commands provided in your <code>git commit</code> result, setup your name and address for the commits, and update your existing commit:</p>
+      <pre><code class="bash">
+        git config --global user.name "Your Name"
+      </code></pre>
+      <pre><code class="bash">
+        git config --global user.email matriculation@live.napier.ac.uk
+      </code></pre>
+      <pre><code class="bash">
+        git commit --amend --reset-author
+      </code></pre>
+
+      <p>You can do the <code>amend</code> command at anytime before pushing your latest commit on a remote repository. It gets more complicated if you already pushed, you can find more details online.</p>
+
+      <p>Using the following command, add some more text into your file.</p>
+      <pre><code class="bash">
+        echo Some more content &gt;&gt; initial.txt
+      </code></pre>
+
+      <p>Now use the <code>git diff</code> command to see the differences between the file commited on the repository and your current version. You should be able to see the new line.</p>
+
+      <p>With <code>git status</code>, check what you have in your current staging index. Add the file using <code>git add</code>, <code>git commit</code> and use <code>git status</code> and <code>git log</code> to confirm everything went as you wanted.</p>
+
+      <p>There are lots of things you can do with GIT, such as reverting commits, changing your current commit pointer and so on. Have a look at the <a href="https://git-scm.com/">documentation online</a>.</p>
+
+      <h3>GIT with Eclipse PDT</h3>
+
+      <p>First download the latest version of <a href="https://eclipse.org/pdt/">Eclipse for PHP (PDT)</a> (Windows 64 edition for the JKCC computers). Copy the archive and extract it in the <code>D:\</code> drive.</p>
+
+      <p><em>For information: Eclipse PDT is not often considered as one of the best PHP editors. I will personnaly recommend PHPStorm (student licence available) or Netbeans if you have administrator rights on your machine.</em></p>
+
+      <p>Run the binary <code>D:\eclipse-php-luna-R-win32-x86_64\eclipse\eclipse.exe</code>.</p>
+
+      <p>Select <code>D:\laragon\www</code> as a workspace. The workspace is basically the root of all the folders you may want to work on.</p>
+
+      <p>Using the top toolbar, create a new project (<code>File</code> -&gt; <code>New</code> -&gt; <code>PHP Project</code>). Use <code>git02</code> as <code>Project name</code> and click on <code>Finish</code>. There are many settings you can use that can impact the syntax coloration and the syntax validation (scalar type hints in PHP7+, short array syntax in PHP5.4, etc).</p>
+
+      <p>If the <code>Welcome</code> tab is opened on your screen, quit it. You can now see your PHP workspace with the files on the left, and the editor in the middle. Your project folder on the left contains a few file and directories specific to you project settings in Eclipse.</p>
+
+      <p>Add a new text file using the <code>File</code> menu, then <code>New</code>, and choose <code>Untitled Text File</code>. As per the terminal example, add some content to the file, such as <code>Add initial content</code>, and save in <code>git02</code> directory with <code>initial.txt</code> as <code>File name</code>.</p>
+
+      <p>Now, you can setup a git repository in your folder (equivalent to code>git init</code>). In the top right corner, there are a few buttons to choose a perspective, which is an elegant way to display only specific views to help you with specific tasks. Next to the <code>PHP button</code>, click on <code>Open Perspective</code> and select <code>Git</code>. You should now be able to use a link <code>Create a new local Git repository</code> with <code>D:\laragon\www\git02</code> as <code>Repository directory</code>, and then click <code>Finish</code>.</p>
+
+      <p>Back to the <code>PHP Perspective</code> (top right of the screen), go to the <code>Window</code> menu, and in <code>Show View</code> select <code>Other</code>, then <code>Git</code> and finally choose <code>Git Staging</code>. This will open for you a tab with the versionning details.</p>
+
+      <p>Click on the project on the left. Opening the object tree, right click on <code>initial.txt</code>, and using the <code>Team</code> menu, click on <code>Add to index</code>.</p>
+
+      <p>On the <code>Git staging</code> view, you should be able to see that your <code>initial.txt</code> file as moved into <code>Staged Changes</code>. Change <code>Author</code> details and <code>Committer</code> details with your own. Now add a commit message (such as <code>Initial commit</code> and finally click on <code>Commit</code> (not <code>Commit and Push</code> as there are no remote repositories configured yet).</p>
+
+      <p>Please have a look at the documentation to use this feature as well as you can. If you have administration rights, I will recommend SourceTree which is on of the best Git tool you can find on both MacOS and Windows.</p>
+
+      <h3>WordPress and GIT</h3>
+
+      <p>You now know the basics of versionning with Git. Please note that mastering this kind of tools takes years and you absolutely need to experience it as much as you can.</p>
+
+      <p>Trying to use GIT with WordPress comes with a few challenges. Indeed, most of the configuration or content changes you can do in CMSs will actually impact databases and rarelly modify files. This practical is focused on versionning files only.</p>
+
+      <p>Whereas WordPress provides very convenient ways to install themes, plugins and updates, you will probably not be able to use these features in your day to day job as a professional developer / content manager. The rationales behind not auto-updating and not using the built-in installer are multiple: security wise, you should not allow php to write files on your web host (unless the folder is made for it and has the minimum write access control), version wise you should keep control on what files are currently deployed, …</p>
+
+      <p>First, you have to understand what files your WordPress project is made of. As you can see by looking at the <a href="https://github.com/WordPress/WordPress">WordPress repository on Github</a>, it mainly contains the core files and some configuration.</p>
+
+      <p>If you have a headset, you can watch <a href="https://www.youtube.com/watch?v=VqJGaEBVHBE&amp;list=PL6qJ-RZM6C5QiRMpi46IgSEcaWx4O7EnC&amp;index=3">Discover special things about Wordpress - 2.2 Take Control of your Environment</a> on Youtube or watch it at home later (it is fairly short but the full playlist and account are also useful).</p>
+
+      <p>Just as in the video, you will use <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">GIT submodules</a> to install your WordPress core files. Open your <code>Shell</code> from Laragon once again. Create a new project folder (<code>mkdir wordpress</code>) and enter it (<code>cd wordpress</code>). Now, you can create a <code>public</code> directory (<code>mkdir public</code>) in which you can set all the web accessible files you want. Consider it as your http server root directory. Add the WordPress repository as a submodule (<code>git submodule add https://github.com/WordPress/WordPress.git public/site</code>).</p>
+
+      <p>The WordPress files have now been downloaded to your <code>/public/site</code> folder. As a submodule, this folder can be automatically updated, and any modified file will be erased by the new version, so beware you can not edit its content.</p>
+
+      <p>As you can not edit these files, you have to start by having your own configuration file. WordPress is made in order to look in its parent folder whether a <code>wp-config.php</code> file exists if there are none in its current folder. You can now copy the sample file from the submodule to your actual <code>public</code> folder under <code>wp-config.php</code> (<code>cp public/site/wp-config-sample.php public/wp-config.php</code>).</p>
+
+      <p>The problem with the current setup is that your <code>wp-config.php</code> file is still under the document root, and you may want for extra protection to move it one level down. Create a config folder (<code>cd config</code>) and move the config file in it (<code>mv public/wp-config.php config/wordpress.php</code>). Now create a new file <code>wp-config.php</code> in <code>public</code> and add the following PHP code in it to include the actual config file:</p>
+      <pre><code class="php">
+        &lt;?php
+
+        require</span> dirname(__DIR__) . '/config/wordpress.php';
+      </code></pre>
+
+      <p>Now let’s focus on the <code>wp-content</code> folder, which contains plugins and themes, and is also used for uploading files on the website. Therefore, you have to had configuration variables to reflect these changes. Edit your <code>config/wordpress.php</code> file and add the following constant:</p>
+      <pre><code class="php">
+        define('APP_ROOT', dirname(__DIR));
+        define('WP_HOME', 'http://localhost/wordpress');
+        define('WP_SITEURL', WP_HOME . '/site');
+        define('WP_CONTENT_DIR', APP_ROOT . '/public/content');
+        define('WP_CONTENT_URL', WP_HOME . '/content');
+      </code></pre>
+
+      <p>The first one (<code>APP_ROOT</code>) defines the actual folder where your project is stored on the filesystem. Then, the two following constants define where the application can be reached, and where the WordPress installation actually is. The final ones define where the content is stored and where it can be retrieved.</p>
+      <p>Then, you can also set the debug settings to true in your <code>wordpress.php</code> file (<code>define('WP_DEBUG', true);</code>, note that the line already exists, just change the value). This will allow error display on the website.</p>
+      <p>You can find similar steps in other good tutorials: <a href="http://ajk.fi/2013/wordpress-as-a-submodule/">Antti-Jussi Kovalainen - WordPress as a submodule</a>. You will then see there are more steps in this tutorial, as the writer decided to add a <code>.htaccess</code> file to redirect users on the subfolder without them having to use the subfolder name.</p>
+      <p>Finally, have a look at <a href="https://timnash.co.uk/wordpress-version-control-tips/">Tim Nash’s WordPress version control tips</a> article for advanced tips and rationales behind them.</p>
+      <p>Ask for help if you can not complete this tutorial, I am here to help.</p>
+      <h3>Bitbucket and Github</h3>
+      <p>If you have some time left, or when you are at home, try to register on either <a href="https://www.github.com">Github</a> or <a href="https://bitbucket.org/">Bitbucket</a>. Both provide GIT hosting, along with code review features and issue tracking, Bitbucket allowing private repositories for free. You can get an extended quota for free private repositories on Github as students as part of the <a href="https://education.github.com/pack">Github Student Developer Pack</a> (where you also get some free VPS hosting, a free domain and a free ssl certificate).</p>
+      <p>Have a look at one, or both, try to <code>git push</code> and <code>git pull</code> your code and check if it worked by browsing your project online.</p>
+      <p>As an employee in a company, your direction may not be inclined to let the source code go on servers outside of the company. In such cases, either the company has money, and can get a licence for <a href="https://enterprise.github.com/home">Github Enterprise</a>, or the company is still small (less than 10 persons) and you may want to go for <a href="https://www.atlassian.com/software/stash">Atlassian Stash</a> (Bitbucket on premises). For cost reasons, you may be forced to go on an open source project, in this case have a look at <a href="https://about.gitlab.com/">Gitlab</a>.</p>
+      <p>Edit: just noticed Gitlab now also provide a free hosting service. You may now try it online for free as well.</p>
+      <h3>Extra</h3>
+      <p>If you want to go ahead and get started with deployment, you can have a look at plugins to help you with databases such as <a href="http://versionpress.net/">VersionPress</a> (not yet stable), <a href="https://deliciousbrains.com/wp-migrate-db-pro/">WP Migrate DB Pro</a> and <a href="http://wp-sync-db.github.io/">WP Sync DB</a>.</p>
+    </body>
+</html>

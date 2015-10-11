@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SOC09108 - Professional practice - WordPress Child Theme</title>
+    <link href='../../style.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+
+  <body>
+    <img id="logo" src="../../ENU-logo.png" alt="Edinburgh Napier University logo">
+    <h1>SOC09108 - 2015 - Practical 03</h1>
+    <h2>Extending WordPress: child themes</h2>
+    <p>Open Laragon, and click on Shell to open the command line application. Following the <a href="https://github.com/Darep/wordpress-boilerplate">WordPress boilerplate by Darep</a>, clone the boilerplate on your machine.</p>
+    <pre><code>
+      git clone --recursive git://github.com/Darep/wordpress-boilerplate.git soc09108/practical02
+    </code></pre>
+    <p>Note that we are using the clone command with a third parameter, in this specific case a path where we want to store the data cloned (targeted folder).</p>
+    <p>While the clone is processing (which takes time), go on Bitbucket if you have not created an account there already and <a href="https://bitbucket.org/account/signup/">create your account</a>. Then create a new repository ( Create in the top toolbar, then Create repository ). You can set <code>soc09108/practical02</code> as name, and leave all the settings by default and uncheck <code>This is a private repository</code> so you have no problems with authentication for now. If you need any help understanding what the options are and are interested in learning more on this subject please ask.</p>
+    <p>On the Repository setup page that will be displayed next, use the last link ( I have an existing project ) to retrieve the instructions you will need to add the boilerplate project to versionning. Back to the command line interface, you can now browse to the folder created while cloning the boilerplate:</p>
+    <pre><code>
+      cd soc09108/practical02 .
+    </code></pre>
+    <p>Using <code>git remote -v</code> , have a look at the existing remotes for your project. By convention, origin is the main remote repository. You should have this result:</p>
+    <pre><code>
+      origin git://github.com/Darep/wordpress-boilerplate.git (fetch)
+      origin git://github.com/Darep/wordpress-boilerplate.git (push)
+    </code></pre>
+    <p>In your case, and in general, you do not want your changes to be pushed back to the boilerplate repository (unless you actually want to contribute to the boilerplate itself, in which case you may want to fork it first, read <a href="http://akrabat.com/the-beginners-guide-to-contributing-to-a-github-project/">the beginners guide to contributing to a github project</a> on Rob Allen’s blog if you are interested).</p>
+    <p>Here we will just remove the existing remote (<code>git remote rm origin</code>), <code>git remote -v</code> to verify it worked, and add the newly created repository on Bitbucket (<code>git remote add origin git@bitbucket.org:_____________/set09108-practical02.git</code>).</p>
+    <p><em>Note: the last command is the first command in the <code>I have an existing project</code> section on Bitbucket.</em></p>
+    <p>Finally, use <code>git push -u origin --all</code> as Bitbucket describes to send the boilerplate on your own repository.</p>
+    <p>Once this is done, refresh your page on Bitbucket and have a look at what you versionned.</p>
+    <p>In the <code>.htaccess</code> file , remove the <code>RewriteBase /</code> . Then edit your <code>wp-config.php</code> and <code>commit</code> and <code>push</code> on Bitbucket. (specifically database settings and <code>define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/soc09108/practical02/wordpress');</code>).</p>
+    <p>You can now complete your wordpress installation.</p>
+    <p>Use <a href="http://www.abrightclearweb.com/creating-child-theme-wordpress-twenty-fifteen/">http://www.abrightclearweb.com/creating-child-theme-wordpress-twenty-fifteen/</a> to create your child theme (call it <code>napier</code>). For now, you can version this theme in the same repository, but eventually you may want to learn how to add your themes as submodules as well. You can use <a href="http://colorsafe.co">colorsafe.co</a> to help you with accessible colours.</p>
+  </body>
+</html>
