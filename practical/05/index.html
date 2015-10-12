@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SOC09108 - 2015 - Practical 05</title>
+    <link href='../../style.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+
+  <body>
+    <img id="logo" src="../../ENU-logo.png" alt="Edinburgh Napier University logo">
+    <h1>SOC09108 - 2015 - Practical 05</h1>
+    <h2>Extending WordPress: plugins</h2>
+    <p>You need to create a form where visitors can enter their email address.</p>
+    <p>Once the address has been validated, store it into your database.</p>
+    <p>If the address does not validate, display the form again with the email provided in the email field and an error message.</p>
+    <p>Please version or backup your code, we will reuse this example for the security practical. <strong>Whereas instruction will be detailed for how to create the plugin, you should be able to version the plugin yourself.</strong> Because this is a very generic plugin, I recommend you to store it on a separate repository and add it as a submodule in your main project.</p>
+    <p><em><strong>Bonus</strong>: create an administration interface to display the list of addresses, and create the form as a shortcode embeddable in any post.</em></p>
+
+    <h2>Create a plugin</h2>
+    <p>Have a look at the documentation for WordPress developers to get the big picture: <a href="https://developer.wordpress.org/plugins/" target="_blank">WordPress developer: plugin</a>.</p>
+    <p>For this practical, we are goinf to assume that you already have a working instance of WordPress installed (with your custom theme/themes).</p>
+    <p>Using your preferred IDE or text editor, open your <code>/wp-content/plugins</code> directory and create a new folder called <code>napier-newsletter</code> in it. Now create a new PHP file with the same name inside of the recently created directory (<code>napier-newsletter.php</code>).</p>
+    <p>First step in creating a plugin is to setup the plugin details. This is done by adding information in a DocBlock comment on top of the main plugin file. Here, edit <code>/wp-content/plugins</code>, and add the following lines:</p>
+    <pre><code class="php">
+      &lt;?php
+      /*
+      Plugin Name: Napier Newsletter
+      */
+    </code></pre>
+    <p>By browsing the plugin section of your administration interface, you should be able to see your plugin. For now, the plugin is disabled (this is a setting stored in database).</p>
+    <img src="plugin-name-only.png" alt="WordPress administration - Plugin section - Plugin with name only">
+    <p><em><strong>Note</strong>: we only provided a name in the comment above, try the same with more details and see how the display changes.</em></p>
+    <pre><code class="php">
+      &lt;?php
+      /*
+      Plugin Name: Napier Newsletter
+      Description: Simple WordPress plugin to allow email addresses gathering for a newsletter system
+      Version:     1.0
+      Author:      Thomas Dutrion
+      Author URI:  https://github.com/tdutrion
+      */
+    </code></pre>
+    <h2>Add the HTML form code</h2>
+    <p>This tutorial is partially based on <a href="http://www.sitepoint.com/build-your-own-wordpress-contact-form-plugin-in-5-minutes/">Sitepoint: Build your own WordPress contact form plugin in 5 minutes</a>. For maintenability reasons, we will try to extract as much code as possible from the main file, and split it by file type (for instance try never to put HTML inside of an HTML function, mixing concerns is not a good practice and prevent your tools to help you with code suggestion and syntax coloration).</p>
+    <p>First create an HTML file for the form. Call it <code>form-template.php</code>.</p>
+    <pre><code class="html">
+      &lt;form action=&quot;&lt;?= esc_url($_SERVER['REQUEST_URI']) ?&gt;&quot; method=&quot;post&quot;&gt;
+          &lt;p&gt;
+              &lt;label&gt;
+                Email address:
+                &lt;input type=&quot;email&quot; name=&quot;napier_newsletter_email&quot; value=&quot;&lt;?= (isset($_POST['napier_newsletter_email']) ? esc_attr($_POST['napier_newsletter_email']) : '') ?&gt;&quot; size=&quot;255&quot;>
+              &lt;/label&gt;
+          &lt;/p&gt;
+          &lt;p&gt;
+              &lt;input type=&quot;submit&quot; name=&quot;napier_newsletter_submit&quot; value=&quot;Register&quot;/&gt;
+          &lt;/p&gt;
+      &lt;/form&gt;
+    </code></pre>
+    <p><em><strong>Note</strong>: the field names are prefixed with <code>napier_newsletter</code> in order to not collide with other forms. We will use the submit button name to verify if data has been sent, so once again watch out for names.</em></p>
+    <p>Now, link this code to your plugin. In your <code>napier-newsletter.php</code> file, add a new function called <code>napier_newsletter</code> that will be responsible for displaying the form.</p>
+    <pre><code class="php">
+      /*
+      Plugin Name: Napier Newsletter
+      Description: Simple WordPress plugin to allow email addresses gathering for a newsletter system
+      Version:     1.0
+      Author:      Thomas Dutrion
+      Author URI:  https://github.com/tdutrion
+      */
+
+      function napier_newsletter() {
+          include 'form-template.php';
+      }
+    </code></pre>
+    <p>Once this is done, you can display your form anywhere on your site by using the plugin <code>template tag</code> (using the theme <code>twentyfifteen</code>, edit <code>header.php</code> and add the following code after <code>&lt;?php get_sidebar(); ?&gt;</code>):</p>
+    <pre><code class="php">
+      &lt;aside class="widget"&gt;
+         &lt;?php napier_newsletter(); ?&gt;
+      &lt;/aside&gt;
+    </code></pre>
+    <p>At the end of the practical, as a bonus, you will see how to use this function to create a shortcode, which can then be used by your end-users.</p>
+    <h2>Form processing</h2>
+    <p>As you are now able to display your form, you may want to add some processing when someone send you some data.</p>
+    <p>In order to process the form, we will need more functions, and we will therefore need to refactor the existing <code>napier-newsletter.php</code> code.</p>
+    <pre><code class="php">
+      &lt;?php
+      /*
+      Plugin Name: Napier Newsletter
+      Description: Simple WordPress plugin to allow email addresses gathering for a newsletter system
+      Version:     1.0
+      Author:      Thomas Dutrion
+      Author URI:  https://github.com/tdutrion
+      */
+
+      function form_validation($emailAddress) {
+          include 'form-validation.php';
+      }
+
+      function form_processing($emailAddress) {
+          include 'form-processing.php';
+      }
+
+      function form_rendering() {
+          include 'form-template.php';
+      }
+
+      function napier_newsletter() {
+          if (isset($_POST['napier_newsletter_submit'])) {
+              $emailAddress = filter_input(INPUT_POST, 'napier_newsletter_email');
+              form_validation($emailAddress);
+              form_processing($emailAddress);
+          }
+          form_rendering();
+      }
+    </code></pre>
+    <p>Note how we changed the <code>napier_newsletter()</code> function so it tests whether data has been sent, filter, verify and process the data if needed and finally displays the form. The previous content of <code>napier_newsletter</code> has been moved to <code>form_rendering</code>.</p>
+    <p><code>form_validation</code> and <code>form_processing</code> have been added to respectively handle the form validation and the data processing. Create both files required with the following content:</p>
+    <p><code>form-validation.php</code></p>
+    <pre><code class="php">
+      &lt;?php
+
+      global $napier_newsletter_errors;
+      $napier_newsletter_errors = new WP_Error;
+
+      if (!is_email($emailAddress)) {
+          $napier_newsletter_errors-&gt;add('email_invalid', 'Email is not valid');
+      }
+
+      if (email_exists($emailAddress)) {
+          $napier_newsletter_errors-&gt;add('email', 'Email address already registered');
+      }
+
+      if (is_wp_error($napier_newsletter_errors)) {
+          foreach ($napier_newsletter_errors-&gt;get_error_messages() as $error) {
+              echo '&lt;div&gt;';
+              echo '&lt;strong&gt;ERROR&lt;/strong&gt;:';
+              echo $error . '&lt;br/&gt;';
+              echo '&lt;/div&gt;';
+          }
+      }
+    </code></pre>
+    <p><code>form-processing.php</code></p>
+    <pre><code class="php">
+      &lt;?php
+
+      global $napier_newsletter_errors;
+
+      if (1 &gt; count($napier_newsletter_errors-&gt;get_error_messages())) {
+          $userdata = [
+              'email' =&gt; $emailAddress,
+          ];
+          // add processing here (for instance save to database)
+          echo &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
+      }
+    </code></pre>
+    <p>Please spend some time understanding the code above. Ask questions if you get stuck on the PHP syntax.</p>
+    <p>Try the plugin now, and see how it behaves.</p>
+    <h2>Database</h2>
+    <p>We haven't persisted the data anywhere yet. We will store the data in a new table in the main database, that should be created when the plugin is enabled and destroyed when the plugin is disabled or removed.</p>
+    <p>Once again, have a look at the documentation before continuing: <a href="https://codex.wordpress.org/Creating_Tables_with_Plugins">Codex: creating tables with plugins</a>. Because documentation is not always the easiest to understand how things work, have a look at this blog post: <a href="https://pippinsplugins.com/create-database-tables-when-plugin-is-activated/">PippinsPlugins: create database tables when plugin is activated</a>.</p>
+    <p>As described in the last resource, we will add some code in the main plugin file (<code>napier-newsletter.php</code>):</p>
+    <pre><code class="php">
+      // function to create the DB / Options / Defaults
+      function napier_newsletter_plugin_options_install() {
+        global $wpdb;
+        $napier_newsletter_db_name = $wpdb->prefix . 'napier_newsletter';
+        // create database table
+        if($wpdb->get_var("show tables like '$napier_newsletter_db_name'") != $napier_newsletter_db_name) {
+            $sql = "CREATE TABLE {$napier_newsletter_db_name} (
+                        email VARCHAR(255) NOT NULL,
+                        PRIMARY KEY  (email)
+                    );";
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            dbDelta($sql);
+          }
+      }
+
+      // run the install scripts upon plugin activation
+      register_activation_hook(__FILE__, 'napier_newsletter_plugin_options_install');
+    </code></pre>
+    <p>If you want, you can add a method that dumps data to a file or send an email with the data from the table and remove that table, and then add it to the <code>register_deactivation_hook</code>.</p>
+    <p>If you use a shortcode, you can also add a method on desactivation or removal that is looking for posts using your shortcode and block the required action.</p>
+    <p>Now, add some more code to the previously created <code>form-processing.php</code> file to save the email to the database. Find an updated version below:</p>
+    <pre><code class="php">
+      &lt;?php
+
+      global $napier_newsletter_errors;
+      global $wpdb;
+
+      if (1 &gt; count($napier_newsletter_errors-&gt;get_error_messages())) {
+          $userdata = [
+              'email' =&gt; $emailAddress,
+          ];
+          $table = &quot;{$wpdb-&gt;prefix}napier_newsletter&quot;;
+          $wpdb-&gt;insert($table, $userdata, ['%s']);
+          echo &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
+      }
+    </code></pre>
+    <p>You have now created a complete custom WordPress plugin. Have a look at your code and look at how you could improve it.</p>
+    <h2>Bonus: use the form as a shortcode</h2>
+    <p>As the functions to display and process the form already exist, we only need to register the main function as a shortcode using the following code (in the main plugin file <code>napier-newsletter.php</code>):</p>
+    <pre><code class="php">
+    // Register a new shortcode: [use_napier_newsletter]
+    add_shortcode('use_napier_newsletter', 'napier_newsletter_shortcode');
+
+    // The callback function that will replace [book]
+    function napier_newsletter_shortcode() {
+        ob_start();
+        napier_newsletter();
+        return ob_get_clean();
+    }
+    </code></pre>
+    <p>Now try to use the shortcode as part of the existing posts.</p>
+    <p><em><strong>Note</strong>: in the code for the shortcode, we are using <a href="http://uk.php.net/manual/en/function.ob-start.php"><code>ob_start</code></a> and <a href="http://uk.php.net/manual/en/function.ob-get-clean.php"><code>ob_get_clean</code></a> to buffer the output instead of printing it on the screen when the function is called, in order to display it to the exact location of the shortcode. Try remove it to see how it behaves.</em></p>
+    <h2>Bonus: create an administration interface</h2>
+    <p>Because this is an advanced feature, you can do that by yourself during the practical or at home. Use the <a href="https://codex.wordpress.org/Administration_Menus">WordPress Codex</a> to learn how to build this feature.</p>
+  </body>
+</html>
