@@ -62,6 +62,17 @@
 						<p>More info: <a href="https://www.youtube.com/watch?v=qMkiZ3Ehv5M" target="_blank">Gary Hockin: top 10 OWASP at PHPUK 2015</a></p>
 					</section>
 					<section>
+						<h2>Injections attacks</h2>
+						<p><a href="http://phpsecurity.readthedocs.org/en/latest/Injection-Attacks.html" target="_blank">phpsecurity documentation</a></p>
+						<ul>
+							<li><strong>SQL Injection</strong></li>
+							<li><strong>Code Injection</strong></li>
+							<li>Log Injection</li>
+							<li>Path Traversal</li>
+							<li>XML Injection</li>
+						</ul>
+					</section>
+					<section>
 						<h2>Authentication and sessions</h2>
 						<ul>
 							<li>Check browser user agent</li>
@@ -78,11 +89,54 @@
 					</section>
 					<section>
 						<h2>Brute force attack</h2>
+						<p>Fortunately, there is an article on <a href="https://codex.wordpress.org/Brute_Force_Attacks" target="_blank">brute force attacks on WordPress codex</a>.</p>
+						<ul>
+							<li>Don't use "admin" as username (easy)</li>
+							<li>
+								Use good password (recommended)
+								<ul>
+									<li>Do not force complex passwords! => bad UX</li>
+									<li>Do not force complex passwords! => people write them down</li>
+								</ul>
+							</li>
+							<li>Limit number of login attempt</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Cross site scripting</h2>
+						<p>Inserting unwanted script (usually javascript) to retrieve any user information and send it somewhere to be stored.</p>
+						<p><a href="https://www.youtube.com/watch?v=D7KndoW1Tj8" target="_blank">Codecourse: PHP Security: XSS (Cross-site Scripting)</a></p>
 					</section>
 					<section>
 						<h2>Transport layer security</h2>
 						<h3>SSL/TLS</h3>
+						<p>Don't send unencrypted password on the network!</p>
 						<p><a href="https://serversforhackers.com/series/ssl-certificates" target="_blank">SSL certificate videos on ServersForHackers</a></p>
+					</section>
+					<section>
+						<h2>Using Known Vulnerable Components</h2>
+						<ul>
+							<li>
+								Update your servers (PHP, Mysql, Apache, Nginx)
+								<ul>
+									<li><a href="https://www.cvedetails.com/product/128/PHP-PHP.html?vendor_id=74" target="_blank">CVE Security Vulnerability Datasource</li>
+									<li><a href="http://php.net/supported-versions.php" target="_blank">PHP versions</a></li>
+								</ul>
+							</li>
+							<li>
+								Update WordPress, themes and plugins
+								<ul>
+									<li>Disable auto-update for versionning, screen code in diffs</li>
+								</ul>
+							</li>
+							<li>
+								Source your plugins and themes correctly
+								<ul>
+									<li>Read the code</li>
+									<li>Use blog posts from security experts</li>
+								</ul>
+							</li>
+						</ul>
 					</section>
 				</section>
 				<section>
@@ -99,6 +153,33 @@
 							<li>Depending on your context, send email for each person logged in as administrator, or watch your logs with automated tasks.</li>
 							<li>Don't use the admin username: <a href="http://codex.wordpress.org/Brute_Force_Attacks">WordPress Codex: Brute force attacks</a>.</li>
 						</ul>
+					</section>
+					<section>
+						<h2>User authentication</h2>
+						<h3>Use Two Factors Authentication</h3>
+						<p>Consider users passwords as compromised (some people use the same password everywhere).</p>
+						<p>Use a known plugin, don't write your own.</p>
+						<p>Explain to your users, they will not understand. Explain why, and how.</p>
+					</section>
+					<section>
+						<h2>Themes / Plugins</h2>
+						<p>Filter inputs, escape outputs, never trust user input.</p>
+						<p>Data from database or APIs are considered as user input, as they can be modified somewhere.</p>
+					</section>
+					<section>
+						<h2>Miscellaneous</h2>
+						<ul>
+							<li>Don't auto-update, keep control on the files.</li>
+							<li>Disable the file editor.</li>
+							<li>Disable plugin/theme uploaders.</li>
+							<li>Use a local configuration file (out of the document root), or use environment variables.</li>
+						</ul>
+						<p><a href="https://timnash.co.uk/wordpress-version-control-tips/" target="_blank">WordPress version control tips</a></p>
+					</section>
+					<section>
+						<h2>Miscellaneous</h2>
+						<p><a href="https://codex.wordpress.org/Changing_File_Permissions" target="_blank">WordPress Codex: Changing file permissions</a></p>
+						<p>Only cache, session and upload folders should be writable. Cache and sessions are optional.</p>
 					</section>
 				</section>
 				<section>
