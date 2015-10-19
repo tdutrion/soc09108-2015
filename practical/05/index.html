@@ -46,7 +46,13 @@
     <h2>Add the HTML form code</h2>
     <p>This tutorial is partially based on <a href="http://www.sitepoint.com/build-your-own-wordpress-contact-form-plugin-in-5-minutes/">Sitepoint: Build your own WordPress contact form plugin in 5 minutes</a>. For maintenability reasons, we will try to extract as much code as possible from the main file, and split it by file type (for instance try never to put HTML inside of an HTML function, mixing concerns is not a good practice and prevent your tools to help you with code suggestion and syntax coloration).</p>
     <p>First create an HTML file for the form. Call it <code>form-template.php</code>.</p>
-    <pre><code class="html">
+    <pre><code class="php">
+      <?php
+          global $napier_newsletter_result;
+          if ($napier_newsletter_result) {
+              echo $napier_newsletter_result;
+          }
+      ?>
       &lt;form action=&quot;&lt;?= esc_url($_SERVER['REQUEST_URI']) ?&gt;&quot; method=&quot;post&quot;&gt;
           &lt;p&gt;
               &lt;label&gt;
@@ -122,6 +128,7 @@
       &lt;?php
 
       global $napier_newsletter_errors;
+      global $napier_newsletter_result;
       $napier_newsletter_errors = new WP_Error;
 
       if (!is_email($emailAddress)) {
@@ -134,10 +141,10 @@
 
       if (is_wp_error($napier_newsletter_errors)) {
           foreach ($napier_newsletter_errors-&gt;get_error_messages() as $error) {
-              echo '&lt;div&gt;';
-              echo '&lt;strong&gt;ERROR&lt;/strong&gt;:';
-              echo $error . '&lt;br/&gt;';
-              echo '&lt;/div&gt;';
+              $napier_newsletter_result = '&lt;div&gt;';
+              $napier_newsletter_result .= '&lt;strong&gt;ERROR&lt;/strong&gt;:';
+              $napier_newsletter_result .=  $error . '&lt;br/&gt;';
+              $napier_newsletter_result .=  '&lt;/div&gt;';
           }
       }
     </code></pre>
@@ -146,13 +153,14 @@
       &lt;?php
 
       global $napier_newsletter_errors;
+      global $napier_newsletter_result;
 
       if (1 &gt; count($napier_newsletter_errors-&gt;get_error_messages())) {
           $userdata = [
               'email' =&gt; $emailAddress,
           ];
           // add processing here (for instance save to database)
-          echo &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
+          $napier_newsletter_result = &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
       }
     </code></pre>
     <p>Please spend some time understanding the code above. Ask questions if you get stuck on the PHP syntax.</p>
@@ -187,6 +195,7 @@
       &lt;?php
 
       global $napier_newsletter_errors;
+      global $napier_newsletter_result;
       global $wpdb;
 
       if (1 &gt; count($napier_newsletter_errors-&gt;get_error_messages())) {
@@ -195,7 +204,7 @@
           ];
           $table = &quot;{$wpdb-&gt;prefix}napier_newsletter&quot;;
           $wpdb-&gt;insert($table, $userdata, ['%s']);
-          echo &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
+          $napier_newsletter_result = &quot;You suscribed to the newsletter with your email address {$emailAddress}.&quot;;
       }
     </code></pre>
     <p>You have now created a complete custom WordPress plugin. Have a look at your code and look at how you could improve it.</p>
@@ -208,7 +217,7 @@
     // The callback function that will replace [book]
     function napier_newsletter_shortcode() {
         ob_start();
-        napier_newsletter();
+        form_rendering();
         return ob_get_clean();
     }
     </code></pre>
