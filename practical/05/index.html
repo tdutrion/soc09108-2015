@@ -129,13 +129,14 @@
 
       global $napier_newsletter_errors;
       global $napier_newsletter_result;
+      global $wpdb;
       $napier_newsletter_errors = new WP_Error;
 
       if (!is_email($emailAddress)) {
           $napier_newsletter_errors-&gt;add('email_invalid', 'Email is not valid');
       }
-
-      if (email_exists($emailAddress)) {
+      $email_exists = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}napier_newsletter");
+      if ($email_exists > 0) {
           $napier_newsletter_errors-&gt;add('email', 'Email address already registered');
       }
 
