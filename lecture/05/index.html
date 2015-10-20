@@ -44,6 +44,99 @@
 					<section>
 						<h2>Generic: optimising page load</h2>
 					</section>
+					<section>
+						<h2>Questions:</h2>
+						<ul>
+							<li>Why is my page so slow?</li>
+							<li>Why don't we have more visitors?</li>
+							<li>Why visitors quit after the first page? (<a href="https://en.wikipedia.org/wiki/Bounce_rate" target="_blank">bounce rate</a>)</li>
+							<li>Who are your visitors, what connexion are they using? (broadband, 4G, 3G, GPRS...)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>What is a website?</h2>
+						<img src="website-definition-search-engine.png" alt="website (ˈwɛbsʌɪt/), noun: a location connected to the Internet that maintains one or more web pages.">
+					</section>
+					<section>
+						<h2>Breaking it down:</h2>
+						<ol>
+							<li class="fragment" data-fragment-index="0">HTTP request from web browser</li>
+							<li class="fragment" data-fragment-index="1">Web server processing (retrieving files, processing PHP or similar)</li>
+							<li class="fragment" data-fragment-index="2">Receiving http response in web browser</li>
+							<li class="fragment" data-fragment-index="3">
+								Processing response in web browser
+								<ul>
+									<li class="fragment" data-fragment-index="4">Fetching resources (css, javascript, images...): http requests! (back to 1)</li>
+									<li class="fragment" data-fragment-index="5">Running javascript (may require extra resources or ajax calls, in which case back to 1)</li>
+								</ul>
+							</li>
+						</ol>
+					</section>
+					<section>
+						<h2>Use your frontend developer tools</h2>
+					</section>
+					<section data-background="google-chrome-network-tab.png"></section>
+					<section data-background="firefox-network-tab.png"></section>
+					<section data-background="safari-timelines-tab.png"></section>
+					<section>
+						<h2>Use your backend developer tools</h2>
+						<ul>
+							<li><a href="http://xdebug.org/" target="_blank">XDebug</a></li>
+							<li><a href="http://pecl.php.net/package/xhprof" target="_blank">XHProf</a></li>
+							<li><a href="https://blackfire.io/" target="_blank">Blackfire</a></li>
+							<li><a href="http://www.zend.com/en/products/z-ray/z-ray-preview">Z-Ray</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>And then?</h2>
+						<p>We now know the main problems. How to solve them?</p>
+					</section>
+					<section>
+						<h2>Use some rules!</h2>
+						<p><a href="https://developers.google.com/speed/docs/insights/rules" target="_blank">https://developers.google.com/speed/docs/insights/rules</a></p>
+					</section>
+					<section>
+						<h2>Use some tools!</h2>
+						<ul>
+							<li><a href="https://developers.google.com/speed/pagespeed/?hl=en" target="_blank">Google Pagespeed</a></li>
+							<li><a href="https://gtmetrix.com/" target="_blank">GTmetrix</a></li>
+							<li><a href="http://yellowlab.tools/" target="_blank">Yellowlab Tools</a></li>
+						</ul>
+					</section>
+					<section>
+						<h2>In a nutshell - PHP</h2>
+						<ul>
+							<li>Limit the number and size of your SQL requests</li>
+							<li>Limit the number of files included</li>
+						</ul>
+						<p>Use a cache! This could be caching the output in memory or in a single file that can be served directly.</p>
+						<p>Also use an opcache to cache your PHP structures (function, classes).</p>
+					</section>
+					<section>
+						<h2>In a nutshell - HTTP server (Apache/Nginx)</h2>
+						<ul>
+							<li>Use the right caching headers</li>
+							<li>Compress the output (GZip)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>In a nutshell - Network</h2>
+						<ul>
+							<li>Use a Content Delivery Network (CDN) to serve content from closer to your visitor</li>
+							<li>Cache files locally (HTTP headers again)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>In a nutshell - Client side</h2>
+						<ul>
+							<li>Limit the number of http request (concatenate JS and CSS)</li>
+							<li>Use async javascript for the non mandatory scripts</li>
+							<li>Optimize your images (use SVG if required)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
 				</section>
 				<section>
 					<section>
@@ -54,6 +147,20 @@
 					</section>
 					<section>
 						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2><a href="https://en.wikipedia.org/wiki/Stevenote" target="_blank">"One more thing"</a>
+					</section>
+					<section>
+						<h2>New learning strategy</h2>
+						<p>Because a module has to be dispensed to persons from different background and with ways of learning, we will try a new excerice.</p>
+						<p>For the next weeks, we will do this exercice for the 2nd hour, or both hours when no lectures are planned.</p>
+						<p><strong>Principle:</strong> a student ask a question (anything related to the module), and the class discuss it and comes with an answer (could be a workflow, a process or a code idea). I as lecturer, will use my computer and implement a proof of concept of the solution live, in front of the class.</p>
+					</section>
+					<section>
+						<h2>Your turn!</h2>
 					</section>
 				</section>
 				<section>
