@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SOC09108 - 2015 - Practical 07</title>
+    <link href='../../style.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+
+  <body>
+    <img id="logo" src="../../ENU-logo.png" alt="Edinburgh Napier University logo">
+    <h1>SOC09108 - 2015 - Practical 07</h1>
+    <h2>Speed up your WordPress installation</h2>
+    <p>Associated lecture: <a href="../../lecture/05/index.html" target="_blank">Optimising page load</a>.</p>
+    <p>This practical will guide you through some methodologies to help you speed up your WordPress website. This is a independent practical, you only need a working WordPress installation, not specifically one using the themes and plugins developed before.</p>
+    <p>Please <a href="./socweb8.html" target="_blank">use the university web server</a> to have your project accessible from outside.</p>
+    <p>Practical plan:</p>
+    <ul>
+      <li>Identify bottlenecks</li>
+      <li>Optimise images</li>
+      <li>Reduce number of http connections</li>
+      <li>Cache your pages</li>
+      <li>Caching</li>
+    </ul>
+    <h2>Identify bottlenecks</h2>
+    <p>First step for speeding up any website is to find out what is not working the way you want.</p>
+    <p>You can setup your WordPress installation using <code>socweb8.napier.ac.uk</code> (<a href="./socweb8.html" target="_blank">see documentation</a>). Unfortunately, at the time I am writing these lines the server only provides PHP 5.3.3, which does not allow at least two syntaxes used in previous practicals. Therefore any <code>&lt;?= $var ?&gt;</code> has to be replaced with <code>&lt;?php echo $var ?&gt;</code> and the short array syntax should not be used (<code>$var = ['item1', 'item2'];</code> becomes <code>$var = array('item1', 'item2');</code>).</p>
+    <p>Setting up your website on a server accessible online will allow you to use third party SAAS products, such as <a href="https://developers.google.com/speed/pagespeed/insights/" target="_blank">Google Pagespeed Insight</a>, <a href="https://gtmetrix.com/" target="_blank">GTmetrix</a> or <a href="http://yellowlab.tools/" target="_blank">Yellowlab Tools</a>.</p>
+    <p>Try to install WordPress on the server and then run these tools, starting with Google Pagespeed Insight:</p>
+    <img src="google-pagespeed-default.png" alt="Google Pagespeed Insight results with default WordPress">
+    <p>As we can see, the css could be optimised, and GZip compression should be enabled.</p>
+    <h2>Enable GZip</h2>
+    <p>Assuming you are using the School Of Computing server, your http server is Apache 2.2 when I write these lines, and <code>AllowOverride All</code> or similar is activated in your VirtualHost configuration.</p>
+    <p>We will assume your setup is similar to this one:</p>
+    <ul>
+      <li>
+        public_html
+        <ul>
+          <li>
+            example
+            <ul>
+              <li>.git</li>
+              <li>.gitignore</li>
+              <li>.gitmodules</li>
+              <li>.htaccess</li>
+              <li>README.md</li>
+              <li>uploads</li>
+              <li>wordpress</li>
+              <li>wp-config.php</li>
+              <li>wp-content</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Edit your <code>.htaccess</code> file and add the following instruction:</p>
+    <pre><code>SetOutputFilter DEFLATE</code></pre>
+    <p>Try to run Google Pagespeed Insight again and the <code>Should fix</code> entry concerning GZip should have disappeared. Other configurations may be required depending on your server (name and version), please read the adequate documentation. HTML5 Boilerplate also has a good <code>.htaccess</code> file, which does not seem to work on the university outdated server but should work on modern, well configured, webservers.</p>
+    <h2>Optimise assets delivery</h2>
+    <p>Next major problem raised by Google is the number of blocking file loaded. This would actually require changes in your code, so you can try do these changes but it is not required here for now. You should just keep this in mind whenever you create either a theme or a plugin that includes javascript or css.</p>
+    <p>An easy solvable problem would be concatenating an minifying your css files to only have one as small as possible to load.</p>
+    <h2>Server side processing</h2>
+    <p>If you add some more pages (using <a href="https://wordpress.org/plugins/wp-example-content/" target="_blank">wp example content</a> for instance), and then try to configure <a href="https://wordpress.org/plugins/wp-super-cache/" target="_blank">WP Super Cache</a>, you should see some cache file created for you. Please also try editing posts and see how to deal with the cached data when editing.</p>
+    <p>If you work on <code>socweb8</code> and have your code versionned with git, you can use WP Super Cache as a submodule.</p>
+    <p>First, you have to generate a ssh key to enable your authentication on github. Login on the server with SSH (using putty if you are on the university machines) and execute the following:</p>
+    <pre><code>ssh-keygen -t rsa -b 4096 -C "your_matriculation@live.napier.ac.uk"</code></pre>
+    <p>When asked <code>Enter file in which to save the key (/home/staff/40007558/.ssh/id_rsa):</code>, press enter (using the value surrounded with brackets).</p>
+    <p>Then, you can add a passphrase (a password for this key), or leave empty if you do not want an extra security.</p>
+    <p>Load the key in the ssh-agent:</p>
+    <pre><code>eval "$(ssh-agent -s)"</code></pre>
+    <pre><code>ssh-add ~/.ssh/id_rsa</code></pre>
+    <p>Finally, copy your public key and <a href="https://github.com/settings/ssh" target="_blank">install it on your github account</a>. When copying the key, make sure you are not adding whitespaces at the begining or the end of the string.</p>
+    <pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
+    <p>You can now clone the plugin.</p>
+    <pre><code>git submodule add git@github.com:Automattic/wp-super-cache.git wp-content/plugins/wp-super-cache</code></pre>
+    <p>Then go to your WordPress administration, in plugins, and enable the plugin. The following lines must have been added to your <code>wp-config.php</code>.</p>
+    <pre><code class="php">
+      define('WP_CACHE', true); //Added by WP-Cache Manager
+      define( 'WPCACHEHOME', '/home/staff/40007558/public_html/example/wp-content/plugins/wp-super-cache/' ); //Added by WP-Cache Manager
+    </code></pre>
+    <p>As you do not want to commit them (the absolute path is probably not the same of each setup you have), you may have some kind of local configuration file somewhere that is in you gitignore file.</p>
+    <p>When trying to setup WP Super Cache, you will need to choose a custom permalink type. Verify whether this broke your url rewriting in <code>.htaccess</code>. Your rewriting should look like this:</p>
+    <pre><code>
+      <IfModule mod_rewrite.c>
+          RewriteEngine On
+          RewriteBase /~40007558/example/
+
+          # BEGIN WordPress
+          RewriteRule ^$ wordpress/index.php [L]
+
+          # Skip real files and directories
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+
+          # Otherwise send it to WordPress
+          RewriteRule .* wordpress/index.php [L]
+          # END WordPress
+      </IfModule>
+    </code></pre>
+    <h2>Bonus</h2>
+    <p>Using the tools discussed in the lecture, try to solve most problems raised. You may be able to use XDebug with Laragon just to see what kind of metrics you can have, but focussing on the frontend is enough for this module.</p>
+    <a href="https://github.com/tdutrion/soc09108-2015"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  </body>
+</html>
