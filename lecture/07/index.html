@@ -1,4 +1,4 @@
-<!doctype html>
+<!Doctype html>
 <html lang="en">
 
 	<head>
@@ -43,6 +43,97 @@
 				<section>
 					<section>
 						<h2>Deployment: best practices</h2>
+					</section>
+					<section>
+						<p>(no mark for that in the practical assessment, just for your culture)</p>
+					</section>
+					<section>
+						<h2>The non-professional way (version 1)</h2>
+						<h3>Solution</h3>
+						<ol>
+							<li>Install WordPress using your hosting provider automated install</li>
+							<li>Change settings</li>
+							<li>Edit themes, plugins and pages from the administration interface</li>
+						</ol>
+					</section>
+					<section>
+						<h2>The non-professional way (version 1)</h2>
+						<h3>Problems</h3>
+						<ul>
+							<li>No control over the files</li>
+							<li>No recovery from a crash</li>
+							<li>A single environment for development, tests and production</li>
+						</ul>
+					</section>
+					<section>
+						<h2>The non-professional way (version 2)</h2>
+						<h3>Solution</h3>
+						<ol>
+							<li>Install and work on your project locally</li>
+							<li>Find the edited files and send through FTP/SFTP/SSH...</li>
+							<li>Check if the site work or update configuration accordingly</li>
+						</ol>
+					</section>
+					<section>
+						<h2>The non-professional way (version 2)</h2>
+						<h3>Problems</h3>
+						<ul>
+							<li>What files did you change?</li>
+							<li><strong>Do not</strong> override the server configuration with your local one</li>
+							<li>Do not override your files with updates or updates with outdated files</li>
+						</ul>
+					</section>
+					<section>
+						<h2>The semi-professional way</h2>
+						<h3>Solution</h3>
+						<ol>
+							<li>Work locally</li>
+							<li>Commit and push your files to a distant repository</li>
+							<li>Connect to your server with ssh and pull your files</li>
+						</ol>
+						<p>You can also use branches and tags on GIT to create different environments.</p>
+					</section>
+					<section>
+						<h2>The semi-professional way</h2>
+						<h3>Problems</h3>
+						<ul>
+							<li>Something happens on the server, visitors can be there at the wrong time</li>
+						</ul>
+					</section>
+					<section>
+						<h2>The ultimate way</h2>
+						<h3>Solution</h3>
+						<ul>
+							<li>Use continuous integration / continuous delivery</li>
+							<li>Generate an artefact (an archive of the production files)</li>
+							<li>Provision a server and deploy</li>
+							<li>Run acceptance tests</li>
+							<li>Move the link from the old server to the new one (also works with folders and symlinks)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Database</h2>
+						<p>The hardest part in moving a CMS.</p>
+						<ul>
+							<li><a href="http://www.liquibase.org/" target="_blank">LiquidBase</a></li>
+							<li><a href="https://wp-sync-db.github.io" target="_blank">WP Sync DB</a>
+								<li><a href="https://deliciousbrains.com/wp-migrate-db-pro/" target="_blank">WP Migrate DB Pro</a>
+						</ul>
+					</section>
+					<section>
+						<h2>Questions?</h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Deployment on the university system</h2>
+					</section>
+					<section>
+						<h2>Demonstration</h2>
+						<p>Attempting the demonstration on Windows on the university system</p>
+					</section>
+					<section>
+						<h2>Questions?</h2>
 					</section>
 				</section>
 				<section>
