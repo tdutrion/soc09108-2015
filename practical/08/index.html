@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SOC09108 - 2015 - Practical 08</title>
+    <link href='../../style.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+
+  <body>
+    <img id="logo" src="../../ENU-logo.png" alt="Edinburgh Napier University logo">
+    <h1>SOC09108 - 2015 - Practical 08</h1>
+    <h2>Summary</h2>
+    <p>Associated lecture: none / all.</p>
+    <p>This practical will guide you through the whole process of setting up a WordPress blog with custom modules and themes as defined in the previous practical sheets.</p>
+    <p>The university webserver (<code>socweb8.napier.ac.uk</code>) will be used for this practical.</p>
+    <p>Practical plan:</p>
+    <ul>
+      <li>Install WordPress using git</li>
+      <li>Configure your WordPress installation</li>
+      <li>Add some security to the default installation</li>
+      <li>Create a theme</li>
+      <li>Create a plugin</li>
+      <li>Secure the plugin</li>
+      <li>Optimize page load</li>
+    </ul>
+    <p>Note: the practical can be followed using Putty on Windows or your terminal application on MacOS and Linux. It has been written for PHP 5.3.3 and Apache 2.2.</p>
+    <h2>Install WordPress using git</h2>
+    <p>First, connect to the webserver using ssh (<code>ssh matriculation_number@socweb8.napier.ac.uk</code>). The root folder of your website should be <code>public_html</code> that is expose to the outside world.</p>
+    <p>Clone Darep boilerplate (recursively to fetch submodules) inside of the public folder:</p>
+    <pre><code class="bash">
+      git clone --recursive git://github.com/Darep/wordpress-boilerplate.git public_html
+    </code></pre>
+    <p>Then, clean your installation and synchronise with your own Github/Bitbucket/Gitlab repository.</p>
+    <pre><code class="bash">
+      cd public_html
+      git remote rm origin
+    </code></pre>
+    <p>Depending on your own repository details:</p>
+    <pre><code class="bash">
+      git remote add origin git@github.com:tdutrion/soc09108-2015-demo.git
+      git push -u origin master
+    </code></pre>
+    <p>Retrieve available WordPress versions:</p>
+    <pre><code class="bash">
+      cd wordpress
+      git fetch --tags
+    </code></pre>
+    <p>Using <code>git tag</code>, you will be able to see the list of all the existing tags available for the repository. The command <code>tail</code> will be used to retrieve the latest line only. The following command is a combination of <code>git checkout &lt;version_number&gt;</code>, <code>git tag</code> that lists the tags available for the git repository, and <code>| tail -n 1</code> that retrieve the last line of the command executed on the other side of the pipe.</p>
+    <pre><code class="bash">
+      git checkout `git tag | tail -n 1`
+    </code></pre>
+    <p>Then get back to your website document root (<code>public_html</code>):</p>
+    <pre><code class="bash">
+      cd ..
+    </code></pre>
+    <p>See if the reference to the latest version of WordPress as changed by using git:</p>
+    <pre><code class="bash">
+      git status
+    </code></pre>
+    <p>If someting has changed, add, commit and push to your remote repository.</p>
+    <h2>Configure your WordPress installation</h2>
+    <p>At this specific point, if you try to access your website you will have a 404 error such as the following:</p>
+    <pre><code>
+      Not Found
+
+      The requested URL /wordpress/index.php was not found on this server.
+    </code></pre>
+    <p>Indeed, the <code>.htaccess</code> file contains instructions to redirect to <code>/wordpress/index.php</code>, the initial slash meaning that this path is used just after the domain. In my example, we have the following:</p>
+    <ul>
+      <li><strong>Website</strong>: <code>http://socweb8.napier.ac.uk/~40007558/</code></li>
+      <li><strong>Looking for</strong>: <code>http://socweb8.napier.ac.uk/wordpress/index.php</code></li>
+      <li><strong>Existing file</strong>: <code>http://socweb8.napier.ac.uk/~40007558/wordpress/index.php</code></li>
+    </ul>
+    <p>Edit the <code>.htaccess</code> content by adding the base path in the redirection addresses:</p>
+    <pre><code class="bash">
+      &lt;IfModule mod_rewrite.c&gt;
+        RewriteEngine On
+        RewriteBase /
+
+        # BEGIN WordPress
+        RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+        RewriteRule ^(.*)$ - [E=BASE:%1]
+        RewriteRule ^$ %{ENV:BASE}wordpress/index.php [L]
+
+        # Skip real files and directories
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+
+        # Otherwise send it to WordPress
+        RewriteRule .* %{ENV:BASE}wordpress/index.php [L]
+        # END WordPress
+      &lt;/IfModule&gt;
+    </code></pre>
+    <p>Back to your page, you should have a new error message displayed:</p>
+    <pre><code>
+      Error establishing a database connection
+    </code></pre>
+    <p>Make sure you have created your database on the server and have you credentials ready.</p>
+    <p>Because you do not want to commit values specific to your environment to your versionning repository, you need to create an alternate file in which you will store the specific configuration (especially passwords).</p>
+    <p>Change your <code>wp-config.php</code> file to the following content (adding a way to use local constants, and tests to avoid errors as constants can not be redefined).</p>
+    <pre><code class="php">
+      &lt;?php
+        /**
+         * The base configurations of the WordPress.
+         *
+         * This file has the following configurations: MySQL settings, Table Prefix,
+         * Secret Keys, and ABSPATH. You can find more information by visiting
+         * {@link http://codex.wordpress.org/Editing_wp-config.php Editing wp-config.php}
+         * Codex page. You can get the MySQL settings from your web host.
+         *
+         * This file is used by the wp-config.php creation script during the
+         * installation. You don't have to use the web site, you can just copy this file
+         * to "wp-config.php" and fill in the values.
+         *
+         * @package WordPress
+         */
+
+        if ( file_exists(dirname(__DIR__) . 'wp-local-config.php') ) {
+          include dirname(__DIR__) . 'wp-local-config.php';
+        }
+
+        // ** MySQL settings - You can get this info from your web host ** //
+        /** The name of the database for WordPress */
+        if ( !defined('DB_NAME') ) {
+          define('DB_NAME', 'database_name_here');
+        }
+
+        /** MySQL database username */
+        if ( !defined('DB_USER') ) {
+          define('DB_USER', 'username_here');
+        }
+
+        /** MySQL database password */
+        if ( !defined('DB_PASSWORD') ) {
+          define('DB_PASSWORD', 'password_here');
+        }
+
+        /** MySQL hostname */
+        if ( !defined('DB_HOST') ) {
+          define('DB_HOST', 'localhost');
+        }
+
+        /** Database Charset to use in creating database tables. */
+        if ( !defined('DB_USER') ) {
+          define('DB_USER', 'utf8');
+        }
+
+        /** The Database Collate type. Don't change this if in doubt. */
+        if ( !defined('DB_COLLATE') ) {
+          define('DB_COLLATE', '');
+        }
+
+        /** Absolute path to the WordPress directory. */
+        if ( !defined('ABSPATH') ) {
+          define('ABSPATH', dirname(__FILE__) . '/wordpress/');
+        }
+
+        if ( !defined('WP_HOME') ) {
+          define('WP_HOME', 'http://' . $_SERVER['HTTP_HOST']);
+        }
+        if ( !defined('WP_CONTENT_DIR') ) {
+          define('WP_CONTENT_DIR', realpath(ABSPATH . '../wp-content/'));
+        }
+        if ( !defined('WP_CONTENT_URL') ) {
+          define('WP_CONTENT_URL', WP_HOME . '/wp-content');
+        }
+        if ( !defined('WP_SITEURL') ) {
+          define('WP_SITEURL', WP_HOME . '/wordpress');
+        }
+        if ( !defined('UPLOADS') ) {
+          define('UPLOADS', '../uploads');
+        }
+
+        /**
+         * Starting with Wordpress 3.7, minor and security updates are rolled out automatically. Detailed information can be
+         * found here: http://make.wordpress.org/core/2013/10/25/the-definitive-guide-to-disabling-auto-updates-in-wordpress-3-7/
+         *
+         * Depening on the project, environment and deployment strategy it might not be ideal to allow Wordpress to do automatic
+         * updates. Possible options are:
+         * 1. Checkout the project from a repository. Wordpress will never auto-update.
+         * 2. Don't allow file modifications through the admin; config: DISALLOW_FILE_MODS
+         * 3. Don't allow automatic updates; config: AUTOMATIC_UPDATER_DISABLED
+         * 4. Only disable core updates; config: WP_AUTO_UPDATE_CORE
+         *
+         * Basically only option one and two are relevant for automatically deployed environments.
+         */
+        if ( !defined('DISALLOW_FILE_MODS') ) {
+          define('DISALLOW_FILE_MODS', true);
+        }
+        if ( !defined('AUTOMATIC_UPDATER_DISABLED') ) {
+          define('AUTOMATIC_UPDATER_DISABLED', true);
+        }
+        if (!defined('WP_AUTO_UPDATE_CORE') ) {
+          define('WP_AUTO_UPDATE_CORE', false);
+        }
+
+        /**#@+
+         * Authentication Unique Keys and Salts.
+         *
+         * Change these to different unique phrases!
+         * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+         * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+         *
+         * @since 2.6.0
+         */
+        if (!defined('AUTH_KEY') ) {
+          define('AUTH_KEY', 'put your unique phrase here');
+        }
+        if (!defined('SECURE_AUTH_KEY') ) {
+          define('SECURE_AUTH_KEY',  'put your unique phrase here');
+        }
+        if (!defined('LOGGED_IN_KEY') ) {
+          define('LOGGED_IN_KEY',    'put your unique phrase here');
+        }
+        if (!defined('NONCE_KEY') ) {
+          define('NONCE_KEY', 'put your unique phrase here');
+        }
+        if (!defined('AUTH_SALT') ) {
+          define('AUTH_SALT', 'put your unique phrase here');
+        }
+        if (!defined('SECURE_AUTH_SALT') ) {
+          define('SECURE_AUTH_SALT', 'put your unique phrase here');
+        }
+        if (!defined('LOGGED_IN_SALT') ) {
+          define('LOGGED_IN_SALT', 'put your unique phrase here');
+        }
+        if (!defined('NONCE_SALT') ) {
+          define('NONCE_SALT', 'put your unique phrase here');
+        }
+
+        /**#@-*/
+
+        /**
+         * WordPress Database Table prefix.
+         *
+         * You can have multiple installations in one database if you give each a unique
+         * prefix. Only numbers, letters, and underscores please!
+         */
+        if ( !isset($table_prefix) ) {
+          $table_prefix  = 'wp_';
+        }
+
+        /**
+         * For developers: WordPress debugging mode.
+         *
+         * Change this to true to enable the display of notices during development.
+         * It is strongly recommended that plugin and theme developers use WP_DEBUG
+         * in their development environments.
+         */
+        if ( !defined('WP_DEBUG') ) {
+          define('WP_DEBUG', false);
+        }
+
+        /* That's all, stop editing! Happy blogging. */
+
+        /** Absolute path to the WordPress directory. */
+        if ( !defined('ABSPATH') ) {
+        	define('ABSPATH', dirname(__FILE__) . '/');
+        }
+
+        /** Sets up WordPress vars and included files. */
+        require_once(ABSPATH . 'wp-settings.php');
+    </code></pre>
+    <p>Create a <code>wp-local-config.php</code> in the parent directory (which is your home directory).</p>
+    <a href="https://github.com/tdutrion/soc09108-2015"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+  </body>
+</html>
